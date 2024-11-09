@@ -4,8 +4,8 @@ import MainCrud from './component/mainCrud'
 
 function App() {
   return (
-    <>
-  <MainCrud/>
+    <> 
+  <MainCrud/> 
     </>
   )
 }
