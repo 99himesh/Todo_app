@@ -7,7 +7,7 @@ const MainCrud = () => {
     
     
     return (
-        <div className='relative h-[100vh]' >
+        <div className='bg-gray-400 relative h-[100vh]' >
         <h1  className='text-center text-[40px] bold py-10'>Todo List</h1>
         {trash ? <Crud />:
          <Trash />}
