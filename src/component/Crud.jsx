@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { MdDeleteForever } from "react-icons/md";
+import deleteIcon from "../../src/assets/bin.gif"
 
 const Crud = () => {
   const [input, setInput] = useState({
-    priority: "medium"
+    priority: "Medium"
   })
-  const [status,setStatus]=useState(false)
-  const [completedData,setComplededData]=useState([])
   const [statusid,setStatusid]=useState([])
   const [data, setData] = useState([])
   const [trashData, setTrashData] = useState([])
-
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value })
@@ -43,35 +42,51 @@ const Crud = () => {
   }, [])
 
 const statusHandler=(idx,item)=>{
-  setStatusid([...statusid,idx])
-  setStatus(true)
+  debugger
+  if(statusid.includes(idx)){
+    let copy=[...statusid];
+    let index=copy.indexOf(idx)
+    copy.splice(index,1)
+
+    setStatusid(copy)
+    console.log(copy);
+    
+
+  }else{
+    setStatusid([...statusid,idx])
+  
+
+
+  }
+
 }
 
-console.log(statusid);
 
 
   return (
-    <div className='w-[50%] mx-auto'>
-      <div className='flex  items-center justify-center gap-5 '>
-        <input name='work' onChange={(e) => { inputHandler(e) }} className='border' />
-        <select defaultValue={"medium"} name='priority' onChange={(e) => { inputHandler(e) }} className='h-[20px]'>
-          <option value={"high"}>High</option>
-          <option value={"medium"}>Medium</option>
-          <option value={"low"}>Low </option>
+    <div className=''>
+      <div className='w-[50%]  mx-auto flex  items-center justify-center gap-5 '> 
+        <input name='work' onChange={(e) => { inputHandler(e) }} className='border rounded ps-2  h-[30px] text-[14px] ' placeholder='Please Enter Todo' />
+        <select  defaultValue={"Medium"} name='priority' onChange={(e) => { inputHandler(e) }} className= 'h-[30px] border rounded text-[14px] cursor-pointer'>
+          <option  value={"High"}>High</option>
+          <option value={"Medium"}>Medium</option>
+          <option value={"Low"}>Low </option>
         </select>
-        <button className='bg-red-400 px-4 py-1 rounded' onClick={() => { saveDataHandler() }}>save</button>
+        <button className='px-3 py-[3px] text-[#fff] rounded bg-[#000]' onClick={() => { saveDataHandler() }}>save</button>
       </div>
-
-
       {data?.map((item, idx) => {
         return (
-          <div className='flex gap-10 items-center'>
-            <div className='border h-4 w-4 rounded-full' style={{background:statusid.includes(idx)  && status?"green":"yellow"}} onClick={() => {statusHandler(idx,item)}} ></div>
-            <h6>{item?.work}</h6> 
-            <div>{item?.priority}</div>
+          <div className='flex  items-center px-5 pt-5 pb-3 border-b-2 '>
+            <div className='flex gap-5 w-[400px] items-center'>
+            <div className='border h-4 w-4 rounded-full cursor-pointer' style={{background:statusid.includes(idx)  ?"green":"#FFBF00"}} onClick={() => {statusHandler(idx,item)}} ></div>
+            <h6 className='text-[16px] font-semibold max-w-[300px] '>{item?.work}</h6> 
+            </div>
+            <div className='flex gap-10 justify-end'>
+            <div className='  w-[50px] ' style={{color:item?.priority==="High" && "red" || item?.priority==="Medium" && "#FFBF00" ||item?.priority==="Low" && "green"}} >{item?.priority}</div>
             {/* <div>{}</div> */}
-            <div >{status?"Completed":"Pending"}</div>
-            <div onClick={() => { deleteHandler(idx) }}>delete</div>
+            <div style={{background: statusid.includes(idx) ?"green":"#FFBF00"}} className='px-5  rounded-xl bg-yellow-300 pb-[1px] text-[14px] max-w-[100px] text-[#fff]' >{  statusid.includes(idx)?"Completed":"Pending"}</div>
+            <div className='flex items-center cursor-pointer bg-[red]'   onClick={() => { deleteHandler(idx) }}><img className='bg-[red]' height={"25px"} width={"25px"} src={deleteIcon}/></div>
+          </div>
           </div>
         )
       })}
